@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<VBox spacing="10" alignment="TOP_LEFT" xmlns="http://javafx.com/javafx" fx:id="root"
+      xmlns:fx="http://javafx.com/fxml" fx:controller="nl.crosshare.jSonny.ApiClientController"
+      stylesheets="@styles.css">
+
+    <HBox spacing="10">
+        <ComboBox fx:id="methodBox">
+            <items>
+                <FXCollections fx:factory="observableArrayList">
+                    <String fx:value="GET"/>
+                    <String fx:value="POST"/>
+                    <String fx:value="PUT"/>
+                    <String fx:value="DELETE"/>
+                </FXCollections>
+            </items>
+        </ComboBox>
+        <TextField fx:id="urlField" promptText="http://crosshare.nl/api/posts/" text="http://crosshare.nl/api/posts/" HBox.hgrow="ALWAYS"/>
+        <Button text="Send" onAction="#sendRequest"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Bearer Token:"/>
+        <TextField fx:id="bearerTokenField" promptText="Paste Bearer token here" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <HBox spacing="10">
+        <Label text="Headers:"/>
+        <TextArea fx:id="headersArea" promptText="Header-Name: value&#10;Another-Header: value" prefRowCount="2" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <HBox spacing="10" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
+        <VBox spacing="5" HBox.hgrow="ALWAYS" fx:id="requestBodyContainer">
+            <Label text="Request Body:"/>
+        </VBox>
+        <VBox spacing="5" HBox.hgrow="ALWAYS" fx:id="responseContainer">
+            <Label text="Response:"/>
+        </VBox>
+    </HBox>
+    <HBox fx:id="statusBar" spacing="5" alignment="CENTER_LEFT" style="-fx-background-color: #222; -fx-padding: 4 8;">
+        <Label fx:id="errorLabel" text="" style="-fx-text-fill: #e06c75;"/>
+    </HBox>
+</VBox>
