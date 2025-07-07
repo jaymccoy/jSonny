@@ -20,21 +20,20 @@
                 </FXCollections>
             </items>
         </ComboBox>
-        <TextField fx:id="urlField" promptText="http://crosshare.nl/api/posts/" text="http://crosshare.nl/api/posts/" HBox.hgrow="ALWAYS"/>
+        <TextField fx:id="urlField" promptText="http://crosshare.nl/api/posts/" HBox.hgrow="ALWAYS"/>
         <Button text="Send" onAction="#sendRequest"/>
     </HBox>
 
     <HBox spacing="10">
-        <Label text="Bearer Token:"/>
-        <TextField fx:id="bearerTokenField" promptText="Paste Bearer token here" HBox.hgrow="ALWAYS"/>
-    </HBox>
-
-    <HBox spacing="10">
         <Label text="Headers:"/>
-        <TextArea fx:id="headersArea" promptText="Header-Name: value&#10;Another-Header: value" prefRowCount="2" HBox.hgrow="ALWAYS"/>
+        <TextArea fx:id="headersArea" promptText="Header-Name: value&#10;Another-Header: value" prefRowCount="4" HBox.hgrow="ALWAYS"/>
     </HBox>
 
     <HBox spacing="10" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
+        <VBox spacing="5" fx:id="requestHistory" VBox.vgrow="ALWAYS">
+            <Label text="Recently executed requests:"/>
+            <ListView fx:id="httpFilesList" prefWidth="200" VBox.vgrow="ALWAYS" styleClass="http-list"/>
+        </VBox>
         <VBox spacing="5" HBox.hgrow="ALWAYS" fx:id="requestBodyContainer">
             <Label text="Request Body:"/>
         </VBox>

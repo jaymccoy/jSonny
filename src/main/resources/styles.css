@@ -64,6 +64,21 @@
     -fx-text-fill: #e0e0e0;
 }
 
+.http-list {
+    -fx-background-color: #222;
+    -fx-control-inner-background: #222;
+    -fx-text-fill: #eee;
+    -fx-border-color: #444;
+}
+.http-list .list-cell {
+    -fx-background-color: #222;
+    -fx-text-fill: #eee;
+}
+.http-list .list-cell:selected {
+    -fx-background-color: #444;
+    -fx-text-fill: #fff;
+}
+
 /* Code Hightlighting */
 .json-key     { -fx-fill: #d19a66; }
 .json-string  { -fx-fill: #98c379; }
