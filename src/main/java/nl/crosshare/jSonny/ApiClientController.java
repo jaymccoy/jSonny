@@ -31,6 +31,10 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 public class ApiClientController {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
@@ -158,6 +162,13 @@ public class ApiClientController {
         if (last != null) {
             httpFilesList.getSelectionModel().select(last);
         }
+
+        // Auto-refresh the list every minute
+        Timeline refreshTimeline = new Timeline(
+                new KeyFrame(Duration.seconds(10), event -> loadHttpFilesList())
+        );
+        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+        refreshTimeline.play();
     }
 
     @FXML
@@ -168,7 +179,8 @@ public class ApiClientController {
             String headersText = headersArea.getText();
             String body = requestCodeArea.getText();
 
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = HttpClient.newBuilder()
+                    .followRedirects(HttpClient.Redirect.ALWAYS).build();
             HttpRequest.Builder builder = HttpRequest.newBuilder()
                     .uri(URI.create(url));
 
@@ -230,6 +242,16 @@ public class ApiClientController {
     }
 
     private void loadHttpFilesList() {
+        String selected = httpFilesList.getSelectionModel().getSelectedItem();
+        // Save changes to the currently selected file before refreshing
+        if (selected != null) {
+            File selectedFile = new File(httpFilesDir, selected);
+            try {
+                saveRequestToFile(selectedFile);
+            } catch (IOException e) {
+                errorLabel.setText("Failed to save: " + e.getMessage());
+            }
+        }
         if (!httpFilesDir.exists()) httpFilesDir.mkdirs();
         File[] files = httpFilesDir.listFiles((dir, name) -> name.endsWith(".http"));
         ObservableList<String> items = FXCollections.observableArrayList();
@@ -237,6 +259,10 @@ public class ApiClientController {
             for (File f : files) items.add(f.getName());
         }
         httpFilesList.setItems(items);
+        if (selected != null && items.contains(selected)) {
+            httpFilesList.getSelectionModel().select(selected);
+        }
+        System.out.println("Loaded HTTP files: " + items);
     }
 
     private static final ObjectWriter PRETTY_PRINTER = new ObjectMapper().writerWithDefaultPrettyPrinter();
@@ -318,8 +344,8 @@ public class ApiClientController {
         // Parse first line: METHOD URL PROTOCOL
         String[] firstLine = lines.get(0).split(" ", 3);
         methodBox.setValue(firstLine.length > 0 ? firstLine[0] : "");
-        urlField.setText(firstLine.length > 1 ? firstLine[1] : "");
-        // Optionally store/use protocol: firstLine.length > 2 ? firstLine[2] : ""
+        String urlFieldPath = firstLine.length > 1 ? firstLine[1] : "";
+        String httpVersion = firstLine.length > 2 ? firstLine[2] : "http";
 
         StringBuilder headers = new StringBuilder();
         StringBuilder comments = new StringBuilder();
@@ -350,6 +376,13 @@ public class ApiClientController {
             i++;
         }
 
+        System.out.println("httpVersion: " + httpVersion);
+        // Instead of always prepending "http://"
+        if (!host.isEmpty() && !urlFieldPath.startsWith("http")) {
+            urlField.setText("http://" + host + urlFieldPath);
+        } else {
+            urlField.setText(urlFieldPath);
+        }
         headersArea.setText(headers.toString().trim());
         requestCodeArea.replaceText(body.toString().trim());
         applyHighlightingAndValidation(requestCodeArea); // <-- Add this line
