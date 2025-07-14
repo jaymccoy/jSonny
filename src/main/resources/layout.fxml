@@ -30,16 +30,20 @@
     </HBox>
 
     <HBox spacing="10" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
-        <VBox spacing="5" fx:id="requestHistory" VBox.vgrow="ALWAYS">
-            <Label text="Recently executed requests:"/>
-            <ListView fx:id="httpFilesList" prefWidth="200" VBox.vgrow="ALWAYS" styleClass="http-list"/>
-        </VBox>
-        <VBox spacing="5" HBox.hgrow="ALWAYS" fx:id="requestBodyContainer">
-            <Label text="Request Body:"/>
-        </VBox>
-        <VBox spacing="5" HBox.hgrow="ALWAYS" fx:id="responseContainer">
-            <Label text="Response:"/>
-        </VBox>
+        <SplitPane fx:id="splitPaneMain" orientation="HORIZONTAL" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+            <items>
+                <VBox spacing="5" fx:id="requestHistory" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" prefWidth="75">
+                    <Label text="Recently executed requests:"/>
+                    <ListView fx:id="httpFilesList" VBox.vgrow="ALWAYS" styleClass="http-list"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" fx:id="requestBodyContainer" prefWidth="500">
+                    <Label text="Request Body:"/>
+                </VBox>
+                <VBox spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" fx:id="responseContainer" prefWidth="500">
+                    <Label text="Response:"/>
+                </VBox>
+            </items>
+        </SplitPane>
     </HBox>
     <HBox fx:id="statusBar" spacing="5" alignment="CENTER_LEFT" style="-fx-background-color: #222; -fx-padding: 4 8;">
         <Label fx:id="errorLabel" text="" style="-fx-text-fill: #e06c75;"/>
