@@ -6,8 +6,11 @@
     -fx-text-fill: #e0e0e0;
 }
 
-.label {
+HBox, VBox, .label {
+    -fx-background-color: #2c313a;
     -fx-text-fill: #e0e0e0;
+    -fx-border-color: #444950;
+    -fx-border-radius: 4px;
 }
 
 .requestBodyContainer .content {

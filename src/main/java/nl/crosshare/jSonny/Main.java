@@ -13,7 +13,8 @@ import java.net.URL;
 public class Main extends Application {
 
     private Stage primaryStage;
-    private SplitPane splitPane;
+    private SplitPane splitPaneMain;
+    private SplitPane splitPaneHeaders;
     private File configFile;
 
 //    @Override
@@ -32,10 +33,11 @@ public class Main extends Application {
         File configFile = new File("src/main/resources/window-config.xml");
         WindowConfig config = WindowConfig.load(configFile);
 
-        // Load FXML and get SplitPane reference
+        // Load FXML and get splitPaneMain reference
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/layout.fxml"));
         Parent root = loader.load();
-        SplitPane splitPane = (SplitPane) root.lookup("#splitPaneMain");
+        SplitPane splitPaneMain = (SplitPane) root.lookup("#splitPaneMain");
+        SplitPane splitPaneHeaders = (SplitPane) root.lookup("#splitPaneHeaders");
 
         // Set window size and position
         primaryStage.setX(config.x);
@@ -44,7 +46,8 @@ public class Main extends Application {
         primaryStage.setHeight(config.height);
 
         // Set SplitPane dividers
-        splitPane.setDividerPositions(config.dividers);
+        splitPaneMain.setDividerPositions(config.dividers);
+//        splitPaneHeaders.setDividerPositions(config.dividers);
 
         primaryStage.setScene(new Scene(root));
         primaryStage.show();
@@ -52,19 +55,20 @@ public class Main extends Application {
 
         // Store references for stop()
         this.primaryStage = primaryStage;
-        this.splitPane = splitPane;
+        this.splitPaneMain = splitPaneMain;
+        this.splitPaneHeaders = splitPaneHeaders;
         this.configFile = configFile;
     }
 
     @Override
     public void stop() throws Exception {
-        // Save current window and SplitPane state
+        // Save current window and splitPaneMain state
         WindowConfig config = new WindowConfig();
         config.x = primaryStage.getX();
         config.y = primaryStage.getY();
         config.width = primaryStage.getWidth();
         config.height = primaryStage.getHeight();
-        config.dividers = splitPane.getDividerPositions();
+        config.dividers = splitPaneMain.getDividerPositions();
         config.save(configFile);
     }
 

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Priority;
@@ -37,6 +38,8 @@ import javafx.util.Duration;
 
 public class ApiClientController {
     private final ObjectMapper objectMapper = new ObjectMapper();
+    public SplitPane splitPaneMain;
+    public SplitPane splitPaneHeaders;
 
     @FXML private Label errorLabel;
     @FXML private ComboBox<String> methodBox;
@@ -164,11 +167,11 @@ public class ApiClientController {
         }
 
         // Auto-refresh the list every minute
-        Timeline refreshTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(10), event -> loadHttpFilesList())
-        );
-        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
-        refreshTimeline.play();
+//        Timeline refreshTimeline = new Timeline(
+//                new KeyFrame(Duration.seconds(10), event -> loadHttpFilesList())
+//        );
+//        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
+//        refreshTimeline.play();
     }
 
     @FXML
@@ -211,7 +214,7 @@ public class ApiClientController {
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenApply(HttpResponse::body)
                     .thenAccept(response -> Platform.runLater(() -> {
-                        responseCodeArea.replaceText(response);
+                        setJsonContent(responseCodeArea, response);
                         applyHighlightingAndValidation(responseCodeArea);
                     }))
                     .exceptionally(e -> {

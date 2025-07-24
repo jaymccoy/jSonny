@@ -17,6 +17,7 @@
                     <String fx:value="POST"/>
                     <String fx:value="PUT"/>
                     <String fx:value="DELETE"/>
+                    <String fx:value="OPTION"/>
                 </FXCollections>
             </items>
         </ComboBox>
@@ -24,28 +25,36 @@
         <Button text="Send" onAction="#sendRequest"/>
     </HBox>
 
-    <HBox spacing="10">
-        <Label text="Headers:"/>
-        <TextArea fx:id="headersArea" promptText="Header-Name: value&#10;Another-Header: value" prefRowCount="4" HBox.hgrow="ALWAYS"/>
-    </HBox>
+<!--    <SplitPane fx:id="splitPaneHeaders" orientation="VERTICAL" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">-->
+<!--        <items>-->
 
-    <HBox spacing="10" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
-        <SplitPane fx:id="splitPaneMain" orientation="HORIZONTAL" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
-            <items>
-                <VBox spacing="5" fx:id="requestHistory" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" prefWidth="75">
-                    <Label text="Recently executed requests:"/>
-                    <ListView fx:id="httpFilesList" VBox.vgrow="ALWAYS" styleClass="http-list"/>
-                </VBox>
-                <VBox spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" fx:id="requestBodyContainer" prefWidth="500">
-                    <Label text="Request Body:"/>
-                </VBox>
-                <VBox spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" fx:id="responseContainer" prefWidth="500">
-                    <Label text="Response:"/>
-                </VBox>
-            </items>
-        </SplitPane>
-    </HBox>
+            <HBox spacing="10">
+                <Label text="Headers:"/>
+        <!--        <TextArea fx:id="headersArea" promptText="Header-Name: value&#10;Another-Header: value" prefRowCount="4" HBox.hgrow="ALWAYS"/>-->
+                <TextArea fx:id="headersArea" promptText="Header-Name: value&#10;Another-Header: value" prefRowCount="6" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS"/>
+            </HBox>
+
+            <HBox spacing="10" alignment="TOP_LEFT" VBox.vgrow="ALWAYS">
+                <SplitPane fx:id="splitPaneMain" orientation="HORIZONTAL" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                    <items>
+                        <VBox spacing="5" fx:id="requestHistory" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" prefWidth="75">
+                            <Label text="Recently executed requests:"/>
+                            <ListView fx:id="httpFilesList" VBox.vgrow="ALWAYS" styleClass="http-list"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" fx:id="requestBodyContainer" prefWidth="500">
+                            <Label text="Request Body:"/>
+                        </VBox>
+                        <VBox spacing="5" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS" fx:id="responseContainer" prefWidth="500">
+                            <Label text="Response:"/>
+                        </VBox>
+                    </items>
+                </SplitPane>
+            </HBox>
+
+<!--        </items>-->
+<!--    </SplitPane>-->
+
     <HBox fx:id="statusBar" spacing="5" alignment="CENTER_LEFT" style="-fx-background-color: #222; -fx-padding: 4 8;">
-        <Label fx:id="errorLabel" text="" style="-fx-text-fill: #e06c75;"/>
+        <Label fx:id="errorLabel" text="" style="-fx-text-fill: #e06c75;" VBox.vgrow="ALWAYS"/>
     </HBox>
 </VBox>
