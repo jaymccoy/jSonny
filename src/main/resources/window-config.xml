@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <window>
-    <x>2914.0</x>
-    <y>-274.0</y>
-    <width>1200.0</width>
-    <height>800.0</height>
+    <x>37.0</x>
+    <y>101.0</y>
+    <width>1716.0</width>
+    <height>914.0</height>
     <splitPaneDividers>
-        <divider0>0.2529711375212224</divider0>
-        <divider1>0.6918505942275043</divider1>
+        <divider0>0.19349112426035503</divider0>
+        <divider1>0.6</divider1>
     </splitPaneDividers>
 </window>

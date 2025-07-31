@@ -32,14 +32,9 @@ import java.util.prefs.Preferences;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
-import javafx.util.Duration;
-
 public class ApiClientController {
     private final ObjectMapper objectMapper = new ObjectMapper();
     public SplitPane splitPaneMain;
-    public SplitPane splitPaneHeaders;
 
     @FXML private Label errorLabel;
     @FXML private ComboBox<String> methodBox;
@@ -55,14 +50,24 @@ public class ApiClientController {
     private VBox responseContainer;    // Add fx:id to the VBox in FXML
 
     @FXML private ListView<String> httpFilesList;
-    private File httpFilesDir = new File("requests"); // folder for .http files
-    private Preferences prefs = Preferences.userNodeForPackage(ApiClientController.class);
+    private final File httpFilesDir = new File("requests"); // folder for .http files
+    private final Preferences prefs = Preferences.userNodeForPackage(ApiClientController.class);
     private static final String LAST_EXECUTED_KEY = "lastExecutedHttpFile";
 
+    public int applicationStatus = 0; // 0 = not running, 1 = initializing, 2 = running, 3 = stopped
+
+    public int getApplicationStatus() {
+        return applicationStatus;
+    }
+
+    public void setApplicationStatus(int applicationStatus) {
+        this.applicationStatus = applicationStatus;
+    }
 
 
     @FXML
     public void initialize() {
+        this.setApplicationStatus(1); // Initializing
         if (!methodBox.getItems().isEmpty() && methodBox.getValue() == null) {
             methodBox.getSelectionModel().selectFirst();
         }
@@ -70,7 +75,6 @@ public class ApiClientController {
         requestCodeArea = new CodeArea();
         VBox.setVgrow(requestCodeArea, Priority.ALWAYS);
         requestCodeArea.getStyleClass().add("code-area");
-//        requestCodeArea.textProperty().addListener((obs, oldText, newText) -> validateJsonInput(requestCodeArea));
         requestBodyContainer.getChildren().add(requestCodeArea);
         requestCodeArea.textProperty().addListener((obs, oldText, newText) -> applyHighlightingAndValidation(requestCodeArea));
 
@@ -166,12 +170,8 @@ public class ApiClientController {
             httpFilesList.getSelectionModel().select(last);
         }
 
-        // Auto-refresh the list every minute
-//        Timeline refreshTimeline = new Timeline(
-//                new KeyFrame(Duration.seconds(10), event -> loadHttpFilesList())
-//        );
-//        refreshTimeline.setCycleCount(Timeline.INDEFINITE);
-//        refreshTimeline.play();
+        this.setApplicationStatus(2); // Running
+        System.out.println("ApiClientController initialized and running.");
     }
 
     @FXML
